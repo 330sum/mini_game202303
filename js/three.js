@@ -15,31 +15,25 @@ let y;
 
 const BLOCKS = {
     cat: [
-        [
-            [8, 5],
-        ]
+        [8, 5],
     ],
     fish: [
-        [
-            [0, 5],
-
-        ]
+        [0, 5],
     ]
 }
 
-// console.log(BLOCKS.fish[0][0].pop()      );
+// console.log(BLOCKS.fish[0].pop()      );
 
-// if (x === BLOCKS.fish[0][0][0] && y === BLOCKS.fish[0][0][1]) {
-//     BLOCKS.fish[0][0].pop();
+if (x === BLOCKS.fish[0][0] && y === BLOCKS.fish[0][1]) {
+    BLOCKS.fish[0].pop();
+}
 
-// }
 
 console.log(BLOCKS.fish);
 
 const movingCat = {
     name: '냥냥이',
     type: 'cat',
-    direction: 0,
     left: 0,
     top: 0
 }
@@ -47,7 +41,6 @@ const movingCat = {
 const movingFish = {
     name: '물고기',
     type: 'fish',
-    direction: 0,
     left: 0,
     top: 0,
 }
@@ -64,10 +57,11 @@ function init() {
     for (let i = 0; i < GAME_ROWS; i++) {
         prependNewLine()
     }
-    drawCat()
-    drawFish();
-    checkMatch();
     
+    drawCat()
+    checkMatch();
+    drawFish();
+
 }
 
 function prependNewLine() {
@@ -84,7 +78,6 @@ function prependNewLine() {
 function drawCat() {
     const {
         type,
-        direction,
         left,
         top
     } = tempMovingCat;
@@ -92,7 +85,7 @@ function drawCat() {
     movingBlocks.forEach(moving => {
         moving.classList.remove(type, 'moving')
     })
-    BLOCKS[type][direction].forEach(block => {
+    BLOCKS[type].forEach(block => {
         x = block[0] + left;
         y = block[1] + top;
         // console.log({$background});
@@ -111,13 +104,6 @@ function drawCat() {
             }, 0)
         }
 
-        
-
-        // console.log(x, y);
-        // console.log(BLOCKS.fish[0][0][0], BLOCKS.fish[0][0][1]);
-        // if (x === BLOCKS.fish[0][0][0] && y === BLOCKS.fish[0][0][1]) {
-        //     BLOCKS.fish[0][0].pop();
-        // }
     })
     movingCat.left = left;
     movingCat.top = top;
@@ -130,24 +116,8 @@ function moveBlock(moveType, amount) {
 }
 
 
-function drawFish() {
-    const {
-        type,
-        direction,
-    } = tempMovingFish;
-    BLOCKS[type][direction].forEach(block => {
-        x = block[0];
-        y = block[1];
 
-        const target = $background.children[y] ? $background.children[y].children[0].children[x] : null;
-        target.classList.add(type);
-
-
-    })
-
-    
-}
-
+// console.log($background.children + "---");
 
 function checkEmpty(target) {
     if (!target) {
@@ -155,6 +125,28 @@ function checkEmpty(target) {
     }
     return true;
 }
+
+
+
+
+
+function drawFish() {
+    const {
+        type,
+    } = tempMovingFish;
+    BLOCKS[type].forEach(block => {
+        x = block[0];
+        y = block[1];
+
+        console.log(x, y);
+
+        const target = $background.children[y] ? $background.children[y].children[0].children[x] : null;
+        target.classList.add(type);
+    
+    })
+  
+}
+
 
 
 
