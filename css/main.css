@@ -1,0 +1,74 @@
+@import url('../css/common.css');
+
+body {
+    background: #fff;
+    font-family: '휴먼모음T', cursive;
+    text-align: center;
+
+}
+
+.wrapper {
+    width: 50%;
+    height: 800px;
+    margin: 0 auto;
+    /* border: 1px solid blue; */
+    position: relative;
+}
+
+.wrapper .text {
+    text-align: center;
+    padding-top: 100px;
+    padding-bottom: 100px;
+    font-size: 2em;
+}
+
+.wrapper .text p {
+    margin-bottom: 20px;
+}
+
+.wrapper .text .special {
+    font-size: 3em;
+}
+
+
+
+.wrapper .level ul {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.wrapper .level ul li .box {
+    width: 300px;
+    height: 300px;
+    /* border: 1px solid #000; */
+    border-radius: 10%;
+}
+
+.wrapper .level ul li .box1 {
+    background: #e7aab7;
+}
+
+.wrapper .level ul li .box2 {
+    background: #accfee;
+}
+
+.wrapper .level ul li .box3 {
+    background: #f5e0b6;
+}
+
+.wrapper .level ul li .level {
+    font-size: 5em;
+    padding: 50px;
+
+}
+
+.wrapper .level ul li h2 {
+    font-size: 1.3em;
+
+}
+
+.wrapper .level ul li h2 span {
+    font-size: 1.2em;
+    color: #f34906;
+
+}

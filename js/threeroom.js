@@ -9,28 +9,30 @@ const GAME_ROWS = 9; // 세로
 let score = 0;
 let tempMovingCat;
 let tempMovingFish;
-let x;
-let y;
+let catX;
+let catY;
 
+
+function col() {
+    return Math.floor(Math.random() * 20);
+}
+
+function row() {
+    return Math.floor(Math.random() * 9);
+}
 
 const BLOCKS = {
     cat: [
         [8, 5],
     ],
     fish: [
-        [0, 5],
+        [col(), row()],
     ]
 }
 
-// console.log(BLOCKS.fish[0].pop()      );
-
-if (x === BLOCKS.fish[0][0] && y === BLOCKS.fish[0][1]) {
-    BLOCKS.fish[0].pop();
-}
 
 
-console.log(BLOCKS.fish);
-
+// 고양이 객체
 const movingCat = {
     name: '냥냥이',
     type: 'cat',
@@ -38,11 +40,10 @@ const movingCat = {
     top: 0
 }
 
+// 물고기 객체
 const movingFish = {
     name: '물고기',
     type: 'fish',
-    left: 0,
-    top: 0,
 }
 
 
@@ -57,13 +58,13 @@ function init() {
     for (let i = 0; i < GAME_ROWS; i++) {
         prependNewLine()
     }
-    
-    drawCat()
-    checkMatch();
+
+    drawCat();
     drawFish();
 
 }
 
+// 새로운 행 만드는 함수
 function prependNewLine() {
     const $li = document.createElement('li');
     const $ul = document.createElement('ul');
@@ -75,6 +76,7 @@ function prependNewLine() {
     $background.prepend($li);
 }
 
+// 고양이 이동하는 함수
 function drawCat() {
     const {
         type,
@@ -86,12 +88,12 @@ function drawCat() {
         moving.classList.remove(type, 'moving')
     })
     BLOCKS[type].forEach(block => {
-        x = block[0] + left;
-        y = block[1] + top;
+        catX = block[0] + left;
+        catY = block[1] + top;
         // console.log({$background});
 
         // 범위 넘어가면 null
-        const target = $background.children[y] ? $background.children[y].children[0].children[x] : null;
+        const target = $background.children[catY] ? $background.children[catY].children[0].children[catX] : null;
         const isAvailable = checkEmpty(target);
         if (isAvailable) {
             target.classList.add(type, 'moving');
@@ -104,20 +106,38 @@ function drawCat() {
             }, 0)
         }
 
+
+        // 고양이가 물고기 먹는 함수
+        checkMatch();
+        drawFish();
+
+        function checkMatch() {
+            if (catX === BLOCKS.fish[0][0] && catY === BLOCKS.fish[0][1]) {
+                BLOCKS.fish[0].pop();
+                console.log(BLOCKS.fish[0].pop());
+                target.classList.remove('fish');
+
+                let $score = document.querySelector('.score');
+                let jumsu = ++score;
+                $score.textContent = jumsu;
+                console.log(jumsu);
+            }
+
+        }
+
+
     })
     movingCat.left = left;
     movingCat.top = top;
 
 }
 
+// 방향키 동작시, 고양이 방향키 만큼 이동하는 함수
 function moveBlock(moveType, amount) {
     tempMovingCat[moveType] += amount;
     drawCat()
 }
 
-
-
-// console.log($background.children + "---");
 
 function checkEmpty(target) {
     if (!target) {
@@ -128,32 +148,7 @@ function checkEmpty(target) {
 
 
 
-
-
-function drawFish() {
-    const {
-        type,
-    } = tempMovingFish;
-    BLOCKS[type].forEach(block => {
-        x = block[0];
-        y = block[1];
-
-        console.log(x, y);
-
-        const target = $background.children[y] ? $background.children[y].children[0].children[x] : null;
-        target.classList.add(type);
-    
-    })
-  
-}
-
-
-
-
-
-
-
-// 이벤트 핸들링
+// 방향키 동작
 document.addEventListener('keydown', e => {
     switch (e.keyCode) {
         case 39:
@@ -177,71 +172,62 @@ document.addEventListener('keydown', e => {
 
 
 
+// 물고기 위치
+function drawFish() {
+    const {
+        type,
+    } = tempMovingFish;
 
-function checkMatch() {
-    const column = $background.children;
-    column.forEach(child => {
-        let matched = true;
-        child.children[0].children.forEach(li => {
-            if (!li.classList.contains("tempMovingFish")) {
-                matched = false;
-            }
-        })
-        if (matched) {
-            child.remove();
-            prependNewLine();
-        }
+
+
+    BLOCKS[type].forEach(block => {
+        fishX = block[0];
+        fishY = block[1];
+
+        // console.log(fishX, fishY);
+
+        const target = $background.children[fishY] ? $background.children[fishY].children[0].children[fishX] : BLOCKS.fish[0].push(col(), row());
+        target.classList.add(type);
+
     })
+
+}
+
+
+// 카운트다운
+countdown();
+
+function countdown() {
+    let seconds = 60;
+    function tick() {
+        let $counter = document.querySelector('.counter');
+        seconds--;
+        $counter.innerHTML = seconds + '초';
+        if( seconds > 0 ) {
+            setTimeout(tick, 1000);
+        } else {
+            alert('집사야~ 잘 먹었다옹!');
+            
+        }
+    }
+    tick();
 }
 
 
 
 
+// 가짜물고기 내려오는 함수 
 
-
-
-
-
-// 랜덤으로 생성하는 함수!
-// setInterval(()=>{
-//     let n = Math.floor(Math.random() * 10) + 1;
-//     const $layer = document.querySelector(`.fish-box .layer:nth-child(${n})`);
-//     const $newLayer = document.createElement(`div`);
-//     $newLayer.innerHTML = '<img src=../images/fish3.png>';
-//     $newLayer.classList.add(`fish`)
-//     $newLayer.classList.add(`fall`);
-//     $layer.appendChild($newLayer);
-//     console.log($layer);
-// }, 1000);
-
-
-
-
-
-// function countdown() {
-//     let seconds = 10;
-//     function tick() {
-//         let $counter = document.getElementById('counter');
-//         seconds--;
-//         $counter.innerHTML = (seconds < 10 ? '0' : '')  + String(seconds) + '초';
-//         if( seconds > 0 ) {
-//             setTimeout(tick, 1000);
-//         } else {
-//             alert('집사야~ 잘 먹었다옹~');
-//         }
-//     }
-//     tick();
-// }
-
-// countdown();
-
-
-
-
-
-
-
-
+setInterval(()=>{
+    let n = Math.floor(Math.random() * 10) + 1;
+    const $layer = document.querySelector(`.fish-box .layer:nth-child(${n})`);
+    const $newLayer = document.createElement(`div`);
+    $newLayer.innerHTML = '<img src=../images/fish3.png>';
+    $newLayer.classList.add(`fish`)
+    $newLayer.classList.add(`fall`);
+    $layer.appendChild($newLayer);
+    console.log($layer);
+}, 1000);
 
 
 
