@@ -14,7 +14,7 @@ let catY;
 
 
 function col() {
-    return Math.floor(Math.random() *12);
+    return Math.floor(Math.random() * 12);
 }
 
 function row() {
@@ -199,35 +199,38 @@ countdown();
 
 function countdown() {
     let seconds = 60;
+
     function tick() {
         let $counter = document.querySelector('.counter');
         seconds--;
         $counter.innerHTML = seconds + '초';
-        if( seconds > 0 ) {
+        if (seconds > 0) {
             setTimeout(tick, 1000);
         } else {
-            alert('집사야~ 잘 먹었다옹!');
-            
+            const $finish = document.getElementById('finish');
+            $finish.classList.add('show');
+
         }
     }
     tick();
 }
 
 
-
+fallingFish();
 
 // 가짜물고기 내려오는 함수 
-
-setInterval(()=>{
-    let n = Math.floor(Math.random() * 10) + 1;
-    const $layer = document.querySelector(`.fish-box .layer:nth-child(${n})`);
-    const $newLayer = document.createElement(`div`);
-    $newLayer.innerHTML = '<img src=../images/fish2.png>';
-    $newLayer.classList.add(`fish`)
-    $newLayer.classList.add(`fall`);
-    $layer.appendChild($newLayer);
-    console.log($layer);
-}, 1000);
+function fallingFish() {
+    setInterval(() => {
+        let n = Math.floor(Math.random() * 10) + 1;
+        const $layer = document.querySelector(`.fish-box .layer:nth-child(${n})`);
+        const $newLayer = document.createElement(`div`);
+        $newLayer.innerHTML = '<img src=../images/fish2.png>';
+        $newLayer.classList.add(`fish`)
+        $newLayer.classList.add(`fall`);
+        $layer.appendChild($newLayer);
+        console.log($layer);
+    }, 1000);
+}
 
 
 

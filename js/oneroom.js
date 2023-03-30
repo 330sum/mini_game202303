@@ -199,15 +199,17 @@ countdown();
 
 function countdown() {
     let seconds = 60;
+
     function tick() {
         let $counter = document.querySelector('.counter');
         seconds--;
         $counter.innerHTML = seconds + '초';
-        if( seconds > 0 ) {
+        if (seconds > 0) {
             setTimeout(tick, 1000);
         } else {
-            alert('집사야~ 잘 먹었다옹!');
-            
+            const $finish = document.getElementById('finish');
+            $finish.classList.add('show');
+
         }
     }
     tick();
@@ -218,7 +220,7 @@ function countdown() {
 
 // 가짜물고기 내려오는 함수 
 
-setInterval(()=>{
+setInterval(() => {
     let n = Math.floor(Math.random() * 10) + 1;
     const $layer = document.querySelector(`.fish-box .layer:nth-child(${n})`);
     const $newLayer = document.createElement(`div`);
@@ -228,6 +230,8 @@ setInterval(()=>{
     $layer.appendChild($newLayer);
     console.log($layer);
 }, 1000);
+
+
 
 
 
