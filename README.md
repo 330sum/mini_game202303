@@ -3,4 +3,4 @@
 <br>
 <br>
 
-## [😺 Application] (https://330sum.github.io/) click!
+## [😺 Application](https://330sum.github.io/) click!
